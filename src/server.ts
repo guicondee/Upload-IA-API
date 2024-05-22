@@ -1,10 +1,20 @@
 import { fastify } from "fastify";
+import { fastifyCors } from "@fastify/cors";
+import { getAllPromptsRoute } from "./routes/get-all-prompts";
+import { uploadVideoRoute } from "./routes/upload-video";
+import { createTranscriptionRoute } from "./routes/create-trasncription";
+import { generateAiCompletionRoute } from "./routes/generate-ai-completion";
 
 const app = fastify();
 
-app.get("/", () => {
-  return "hello word";
+app.register(fastifyCors, {
+  origin: "*", //em produção o ideal é configurar exatamente o dominio que aplicação front-end esta hospedada.
 });
+
+app.register(getAllPromptsRoute);
+app.register(uploadVideoRoute);
+app.register(createTranscriptionRoute);
+app.register(generateAiCompletionRoute);
 
 app
   .listen({
